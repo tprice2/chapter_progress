@@ -44,13 +44,15 @@ count2 = 0
 number = 0
 while number != -1:
     number = int(input("Enter a number:"))
-    count2 = count2 + 1
-    total2 = total2 + number
-    average = total2/count2
-    print("Count: " + str(count2))
-    print("Total: " + str(total2))
-    print("Average: " + str(average))
-print("Program Finished")
+    if number != -1:
+        count2 = count2 + 1
+        total2 = total2 + number
+        average = total2/count2
+        print("Count: " + str(count2))
+        print("Total: " + str(total2))
+        print("Average: " + str(average))
+    else:
+        print("Program Finished")
 # TODO 4.6 validating data
 # Ask the user to enter a number between 1 and 10.
 # Use a while loop to force the user to repeat the
