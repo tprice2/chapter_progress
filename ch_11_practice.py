@@ -51,8 +51,8 @@ class SingleFamilyHome(Dwelling):
 
     def __init__(self, number_of_rooms, square_feet, floors, yard_size, garage_type):
         Dwelling.__init__(self, number_of_rooms, square_feet, floors)
-        self.garage_type = garage_type
-        self.yard_size = yard_size
+        self._garage_type = garage_type
+        self._yard_size = yard_size
 
     def set_yard_size(self, yard_size):
         self._yard_size = yard_size
@@ -81,11 +81,10 @@ def main():
     set_1 = [q1]
 
     for query in set_1:
-        print("\n")
         print(query.get_number_of_floors())
         print(query.get_square_feet())
         print(query.get_floors())
-        print(query.get_garage_type()) # Gets the question for each element in the set_1 list.
+        print(query.get_garage_type())  # Gets the question for each element in the set_1 list.
         print(query.get_yard_size())  # Gets the first answer for each element in the set_1 list.
 
 
@@ -94,14 +93,53 @@ main()
 
 # TODO 11.2 Polymorphism
 # Type in the mammal class from program 11-9    lines 1 - 22
+# The Mammal class represents a generic mammal.
 
+class Mammal:
+
+    def __init__(self, species):  # The _ _init_ _ method accepts an argument for the mammal's species.
+        self.__species = species
+
+    def show_species(self):  # The show_species method displays a message indicating the mammal's species.
+        print('I am a', self.__species)
+
+    def make_sound(self):  # The make_sound method is the mammal's way of making a generic sound.
+        print('Growl')
 
 # create a Mouse class as a sub class of the mammal class following the Dog example
 
+
+class Mouse(Mammal):
+    def __init__(self):
+        Mammal.__init__(self, 'Mouse')
+
+    def make_sound(self):
+        print("Squeak")
 # create a Bird class as a sub class of the mammal class following the Cat Example
 
+
+class Bird(Mammal):
+    def __init__(self):
+        Mammal.__init__(self, 'Bird')
+
+    def make_sound(self):
+        print("Chirp Chirp")
 
 # Follow the example in program 11-10 (no need to import, use main2 instead of main
 # because there is already a main on this page) use the Mouse and Bird class that you created
 
 
+def main2():
+    mouse = Bird()
+    bird = Mouse()
+    print("Here are some animals and the sound they make: ")
+    show_mammal_info(mouse)
+    show_mammal_info(bird)
+
+
+def show_mammal_info(creature):
+    creature.show_species()
+    creature.make_sound()
+
+
+main2()
