@@ -15,31 +15,31 @@
 class Dwelling:
 
     def __init__(self, number_of_rooms, square_feet, floors):
-        self._number_of_rooms = number_of_rooms
-        self._square_feet = square_feet
-        self._floors = floors
+        self.__number_of_rooms = number_of_rooms
+        self.__square_feet = square_feet
+        self.__floors = floors
 
 # add the mutator for all of the data attributes (number_of_rooms, square_feet, floors)
 
     def set_number_of_rooms(self, number_of_rooms):
-        self._number_of_rooms = number_of_rooms
+        self.__number_of_rooms = number_of_rooms
 
     def set_square_feet(self, square_feet):
-        self._square_feet = square_feet
+        self.__square_feet = square_feet
 
     def set_floors(self, floors):
-        self._floors = floors
+        self.__floors = floors
 
 # add the accessors for all of  the data attributes
 
     def get_number_of_floors(self):
-        return self._number_of_rooms
+        return self.__number_of_rooms
 
     def get_square_feet(self):
-        return self._square_feet
+        return self.__square_feet
 
     def get_floors(self):
-        return self._floors
+        return self.__floors
 
 # Create the class Single_family_home as a sub class of Dwelling
 # The __init__ method should accept number_of_rooms, square_feet, floors, garage_type, yard_size
@@ -51,20 +51,20 @@ class SingleFamilyHome(Dwelling):
 
     def __init__(self, number_of_rooms, square_feet, floors, yard_size, garage_type):
         Dwelling.__init__(self, number_of_rooms, square_feet, floors)
-        self._garage_type = garage_type
-        self._yard_size = yard_size
+        self.__garage_type = garage_type
+        self.__yard_size = yard_size
 
     def set_yard_size(self, yard_size):
-        self._yard_size = yard_size
+        self.__yard_size = yard_size
 
     def set_garage_type(self, garage_type):  # create the mutator and accessor methods for the garage_type and yard_size attributes
-        self._garage_type = garage_type
+        self.__garage_type = garage_type
 
     def get_garage_type(self):
-        return self._garage_type
+        return self.__garage_type
 
     def get_yard_size(self):
-        return self._yard_size
+        return self.__yard_size
 # demonstrate the Single_family_home class, no need to import because you are in the same file
 
 # create an object from the Single_family_home class with the following information:
@@ -98,6 +98,9 @@ main()
 class Mammal:
 
     def __init__(self, species):  # The _ _init_ _ method accepts an argument for the mammal's species.
+        self.__species = species
+
+    def set_species(self, species):
         self.__species = species
 
     def show_species(self):  # The show_species method displays a message indicating the mammal's species.
