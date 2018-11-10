@@ -2,6 +2,8 @@ import tkinter
 import tkinter.messagebox
 import pickle
 
+# This is the main class, where the menu is formulated (radio buttons)
+
 
 class CrudGUI:
     def __init__(self, master):
@@ -42,7 +44,8 @@ class CrudGUI:
         # pack the frames
         self.top_frame.pack()
         self.bottom_frame.pack()
-    
+    # These if statements direct the user to each respective menu, which is created by each respective class.
+
     def open_menu(self):
         if self.radio_var.get() == 1:
             search = LookGUI(self.master)
@@ -55,6 +58,8 @@ class CrudGUI:
         else:
             tkinter.messagebox.showinfo('Function', 'still under construction')
 
+# This class is responsible for checking whether the input is already saved in customer_file.dat
+
 
 class LookGUI:
     def __init__(self, master):
@@ -63,7 +68,6 @@ class LookGUI:
         try:
             input_file = open("customer_file.dat", 'rb')
             self.customers = pickle.load(input_file)
-            print(self.customers)
             input_file.close()
         except (FileNotFoundError, IOError):
             self.customers = {}
@@ -87,7 +91,7 @@ class LookGUI:
         
         # middle frame
         self.value = tkinter.StringVar()
-        self.info = tkinter.Label(self.middle_frame, text='Results: ')
+        self.info = tkinter.Label(self.middle_frame, text='Email: ')
         self.result_label = tkinter.Label(self.middle_frame, textvariable=self.value)
         
         # pack Middle frame
@@ -106,15 +110,22 @@ class LookGUI:
         self.top_frame.pack()
         self.middle_frame.pack()
         self.bottom_frame.pack()
-    
+
+    # This is called when the "Search" button is pressed.
+
     def search(self):
         name = self.search_entry.get()
-        result = self.customers.get(name.upper(), 'Not Found')
-        self.value.set(result)
-    
+        if name.upper() in self.customers:  # If name(everything is uppercase) is stored, then display this email.
+            result = self.customers.get(name.capitalize())
+            self.value.set(result)
+        else:  # If it's not, then show "Not Found"
+            self.value.set('Not Found')
+
     def back(self):
         self.look.destroy()
 
+
+# This class is called when the user wants to add a customer
 
 class Add:
     #  open the file, load to customers, close file. Do in each class
@@ -173,18 +184,23 @@ class Add:
         self.middle_frame.pack()
         self.bottom_frame.pack()
 
-    def add(self):
-        name = self.add_customer_entry.get()
-        email = self.add_email_entry.get()
-        self.customers[name.upper()] = email.upper()
-        self.add_alert.set("Customer added: " + str(self.customers))
-        save_file = open('customers.dat', 'ab')
+    def add(self):  # This is called when the user presses "add"
+        name = self.add_customer_entry.get()  # Sets the name variable equal to the user input in the name gui
+        email = self.add_email_entry.get()  # Sets the email variable equal to the user input in the email gui
+        if name.upper() in self.customers:  # If the entered name is in the file, then state this.
+            self.add_alert.set("This customer already exists")
+        else:
+            self.customers[name.upper()] = email.upper()  # Adds the dictionary value of "name" with item "email"
+            self.add_alert.set("Customer added: " + str(name.capitalize()))
+
+    def back(self):  # This saves, pickles, and closes the menu.
+        save_file = open('customer_file.dat', 'wb')
         pickle.dump(self.customers, save_file)
         save_file.close()
-
-    def back(self):
         self.look.destroy()
 
+
+# This class is called if the use wants to change a customer email
 
 class Change:
     def __init__(self, master):
@@ -193,7 +209,6 @@ class Change:
         try:
             input_file = open("customer_file.dat", 'rb')
             self.customers = pickle.load(input_file)
-            print(self.customers)
             input_file.close()
         except (FileNotFoundError, IOError):
             self.customers = {}
@@ -247,21 +262,24 @@ class Change:
         self.third_frame.pack()
         self.bottom_frame.pack()
 
+    # This is called if the user selects the "change email" button.
     def change(self):
         name = self.search_entry.get()
         name = name.upper()  # Converts name to upper so that caps don't matter.
-        if name in self.customers:
+        if name in self.customers:  # If the name is in the file, then set the value of this dictionary item to the entered email.
             email = self.add_email_entry.get()
             self.customers[name] = email
-            self.value.set("Email changed")
-            save_file = open('customers.dat', 'ab')
-            pickle.dump(self.customers, save_file)
-            save_file.close()
-        else:
+            self.value.set("Email Updated")
+        else:  # Else, the customer doesn't exist, so state that.
             self.value.set("That customer does not exist")
 
-    def back(self):
+    def back(self):  # This pickles the file, closes the file, and closes the menu.
+        save_file = open('customer_file.dat', 'wb')
+        pickle.dump(self.customers, save_file)
+        save_file.close()
         self.look.destroy()
+
+# This is the delete class, called if the user wants to delete a customer.
 
 
 class Delete:
@@ -271,7 +289,6 @@ class Delete:
         try:
             input_file = open("customer_file.dat", 'rb')
             self.customers = pickle.load(input_file)
-            print(self.customers)
             input_file.close()
         except (FileNotFoundError, IOError):
             self.customers = {}
@@ -315,15 +332,19 @@ class Delete:
         self.middle_frame.pack()
         self.bottom_frame.pack()
 
+    # Called if the user selects "delete"
     def delete(self):
         name = self.search_entry.get()
-        if name in self.customers:
-            del self.customers[name]
+        if name.upper() in self.customers:  # If the entered name is in the file, then delete this dictionary item.
+            del self.customers[name.upper()]
             self.value.set("Customer Deleted")
-        else:
+        else:       # Else, state this customer doesn't exist
             self.value.set("That customer does not exist")
 
-    def back(self):
+    def back(self):  # Pickle the file, close the file, and close this menu.
+        save_file = open('customer_file.dat', 'wb')
+        pickle.dump(self.customers, save_file)
+        save_file.close()
         self.look.destroy()
 
 
